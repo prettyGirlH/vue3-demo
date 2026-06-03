@@ -1,3 +1,3 @@
 <template>
-    <div>个人中心页</div>
+    <div>个人中心</div>
 </template>
