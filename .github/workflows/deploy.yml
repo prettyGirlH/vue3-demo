@@ -1,0 +1,38 @@
+name: Build and Deploy Vue App to gh-pages
+
+on:
+  push:
+    branches: [ "main" ]      # 当代码被推送到 main 分支时，触发工作流
+  workflow_dispatch:          # 允许在 Actions 标签页手动触发
+
+# 设置权限：actions/checkout 需要读取代码，部署时需要写入内容到仓库
+permissions:
+  contents: write             # 允许工作流写入代码，用于推送到 gh-pages 分支
+
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }}  # 防止多个部署任务同时运行造成冲突
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies 📦
+        run: npm ci
+        
+      - name: Build Project 🏗️
+        run: npm run build
+        
+      - name: Deploy to gh-pages branch 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist          # 要部署的文件夹，即你的打包输出目录
+          branch: gh-pages      # 部署到的目标分支，必须与 GitHub Pages 设置中的一致
+          clean: true           # 部署前清理 gh-pages 分支上的旧文件
