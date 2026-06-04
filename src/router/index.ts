@@ -13,7 +13,7 @@ const routes = Object.values(modules).reduce<RouteRecordRaw[]>((acc, module) => 
     return acc;
   }, []);
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory('/vue3-demo/'),
     routes:routes
 })
 
