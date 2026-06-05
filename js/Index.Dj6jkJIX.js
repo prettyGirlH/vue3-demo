@@ -1,0 +1,1 @@
+import{u as e,v as t}from"./vue-core.CkynLRq4.js";import{t as n}from"./_plugin-vue_export-helper.BDNMzG2s.js";var r={};function i(n,r){return t(),e(`div`,null,`首页模版`)}var a=n(r,[[`render`,i]]);export{a as default};
