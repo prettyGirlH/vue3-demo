@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   build-and-deploy:
-    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     
     steps:
@@ -31,15 +30,21 @@ jobs:
           version: 8
           
       - name: Install Dependencies 📦
-        # 不使用 frozen-lockfile，让 pnpm 生成新的 lockfile
         run: pnpm install --no-frozen-lockfile
         
       - name: Build Project 🏗️
         run: pnpm run build
         
-      - name: Deploy to gh-pages branch 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: List dist contents (Debug)
+        run: ls -la dist
+        
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          folder: dist
-          branch: gh-pages
-          clean: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true  # 清理旧文件，避免残留
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: ${{ github.event.head_commit.message }}
