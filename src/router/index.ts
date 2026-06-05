@@ -4,13 +4,13 @@ const modules = import.meta.glob('./module/*.ts',{
     eager: true,
     import: 'default'
 });
-const routes = Object.values(modules).reduce<RouteRecordRaw[]>((acc, module) => {
+const routes = Object.values(modules).reduce<RouteRecordRaw[]>((arr, module) => {
     if (Array.isArray(module)) {
-      acc.push(...module);
+      arr.push(...module);
     } else if (module) {
-      acc.push(module as RouteRecordRaw);
+      arr.push(module as RouteRecordRaw);
     }
-    return acc;
+    return arr;
   }, []);
 const router = createRouter({
     history: createWebHistory('/vue3-demo/'),
